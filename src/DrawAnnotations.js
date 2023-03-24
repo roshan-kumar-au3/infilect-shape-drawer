@@ -26,14 +26,14 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
         height={shapeProps.height}
         fill="transparent"
         stroke={isSelected ? 'red' : 'yellow'}
-        // draggable
-        // onDragEnd={(e) => {
-        //   onChange({
-        //     ...shapeProps,
-        //     x: e.target.x(),
-        //     y: e.target.y(),
-        //   });
-        // }}
+        draggable
+        onDragEnd={(e) => {
+          onChange({
+            ...shapeProps,
+            x: e.target.x(),
+            y: e.target.y(),
+          });
+        }}
         onTransformEnd={(e) => {
           // transformer is changing scale of the node
           // and NOT its width or height
@@ -48,8 +48,8 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           node.scaleY(1);
           onChange({
             ...shapeProps,
-            x: node.x(),
-            y: node.y(),
+            x1: node.x(),
+            y1: node.y(),
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(node.height() * scaleY),

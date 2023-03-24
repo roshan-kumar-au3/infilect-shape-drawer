@@ -54,6 +54,17 @@ function App() {
     }
   }, [selectedId]);
 
+  useEffect(() => {
+    const annotationsSaved = JSON.parse(localStorage.getItem('annotations')) ?? [];
+    const annotationsForCurrentImage = annotationsSaved.length && annotationsSaved.filter(annotation => annotation.imgId === images[currentIndex].id);
+    setAnnotations(annotationsForCurrentImage);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
+
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -92,7 +103,8 @@ function App() {
 
   const save = () => {
     let annotationsSaved = JSON.parse(localStorage.getItem('annotations')) || [];
-    localStorage.setItem('annotations', JSON.stringify([...annotations, ...annotationsSaved]));
+    const annotationsSavedWithoutthisImageId = annotationsSaved.filter(annotation => annotation.imgId !== images[currentIndex].id);
+    localStorage.setItem('annotations', JSON.stringify([...annotations, ...annotationsSavedWithoutthisImageId]));
   }
 
   return (
